@@ -1,0 +1,23 @@
+{%extends 'base.html'%}
+
+{%block title%} Record {%endblock title%}
+
+{%block content%}
+{%if message%}
+<div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+    <h1 style="text-align: center;" class="h5">{{message}}</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{%endif%}
+
+<div class="container">
+    <div class="row justify-content-center mt-3 mb-2 col-8">
+                <h2>Make a new record of your training:</h2>
+                <hr>
+    </div>
+    <form style="margin-top:3rem;" method="POST" action="">
+        {%csrf_token%}
+            {{form}}
+    </form>
+</div>
+{%endblock content%}

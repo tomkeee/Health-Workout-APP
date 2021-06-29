@@ -1,0 +1,97 @@
+{%load static%}
+<!-- gives an ability to use static files -->
+<!doctype html>
+<html lang="en">
+  <head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <title>{%block title%} {%endblock title%}</title>
+
+  </head>
+  <body>
+    {% if registration %}
+    {%else%}
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5" style="background-color: #e3f2fd;">   
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active mt-2 mr-3">
+            <a class="dropdown-toggle" style="text-decoration:none;color: inherit;" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              Account
+                </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/profile/edit/">My account</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/add">Add</a></li>
+                    <!-- <li><a class="dropdown-item" href="#">Add</a></li>
+                    <li><a class="dropdown-item" href="#">calculator</a></li>
+                    <li><a class="dropdown-item" href="#">Update portfolio</a></li> -->
+                    <li><a class="dropdown-item" href="/list">List</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                  </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Exercises</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'weight' %}">Weight</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Notes</a>
+              </li>
+              <!-- <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Investments
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                      <li><a class="dropdown-item" href="#">Assets</a></li>
+                      <li><a class="dropdown-item" href="#">Regions</a></li>
+                      <li><a class="dropdown-item" href="#">Sectors</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div> -->
+            </ul>
+      
+          <div class="navbar navbar-light bg-light justify-content-between">
+            <!-- If we want to use tiingo (describtion open/high/low etc)  -->
+            <!-- <form class="form-inline my-2 my-lg-0" action="/quote/" method="POST">{%csrf_token%}
+              <input class="form-control mr-sm-2" type="search" placeholder="AAPL" aria-label="Search" name="ticker"> -->
+      
+            <!-- If we want to use iexcloud 1) (current price, P/E marketcap) -->
+          </div>
+        </nav>
+      </header>
+      {%endif%}
+      <main>
+          <div class="container">
+              {%block content%} {%endblock content%}
+          </div>
+      </main>
+      {% if registration %}
+      {%else%}
+      <footer class="space bg-light text-center text-white">
+        <div class="container p-3 pb-0">
+          <section class="mb-3">
+            <a href="https://twitter.com/ScierskiTomasz"> <img src="{% static 'images/twitter.png' %}"  alt="Twitter account"></a>
+            <a class="ml-5" href="https://github.com/tomkeee"> <img src="{% static 'images/github.png' %}" alt="github account"></a>
+            <a class="ml-5" href="https://pl.linkedin.com"> <img src="{% static 'images/lidin.png' %}"  alt="Linkedin account"></a>
+            <a class="ml-5" href="mailto:tomsci16@gmail.com"> <img src="{% static 'images/gmail.png' %}" alt="email adress"></a>
+          </section>
+        </div>
+      
+        <div class="text-center p-1" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2021 Copyright: Icons made by
+          <a class="text-white" href="https://flaticon.com"> Freepik</a>
+        </div>
+      
+      </footer>
+      {%endif%}
+    <script src="{% static 'js/index.js' %}" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>

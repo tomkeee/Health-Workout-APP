@@ -1,0 +1,16 @@
+{%extends 'base.html'%}
+{%block title%} List {%endblock%}
+{%block content%}
+<div class="container" style="margin-bottom: 400px; margin-top: 100px;">
+    <h1 class="display-3 text-center">Select exercise for eligible muscle </h1>
+    <br/>
+    <div class="mt-5 form-row justify-content-center">
+        <div>
+            <a href="{% url 'exercise-detail' all %}"><button type="submit" class="ml-5 btn btn-outline-secondary btn-lg">All exercises</button></a>
+            {%for muscle in muscles%}
+                <a href="{% url 'exercise-detail' muscle %}"><button type="submit" class="ml-5 btn btn-outline-secondary btn-lg">{{muscle}}</button></a>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+{%endblock content%}

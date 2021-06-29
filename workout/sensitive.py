@@ -1,0 +1,5 @@
+NAME='workout'
+USER='postgres'
+PASSWORD='wiwa12321'
+HOST='localhost'
+PORT='3000'
