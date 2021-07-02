@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path((''),include('exercise.urls')),
     path("weight/",WeightUpdate.as_view(),name="weight"),
-    path("x/",WeightController),
+    path("weight/history",WeightController),
 ]
 
 urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

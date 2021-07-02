@@ -34,11 +34,8 @@ class UpdateExercise(UpdateView):
 
 @login_required
 def ExerciseList(request):
-    print(request.user)
     user=request.user
     qs=Exercise.objects.filter(profile=user).order_by('type')
-
-    all="all"
 
     muscle_history=[]
     for instance in qs:
@@ -48,7 +45,6 @@ def ExerciseList(request):
             muscle_history.append(instance.type)
 
     context={
-        "all":all,
         "qs":qs,
         "muscles":muscle_history
     }
@@ -58,14 +54,13 @@ def ExerciseList(request):
 @login_required
 def ExerciseRecord(request,muscle):
     user=request.user
-    if muscle == "all":
+    if muscle == "All":
         qs=Exercise.objects.filter(profile=user).order_by("type")
     else:
         qs=Exercise.objects.filter(profile=user,type=muscle)
 
     data=[]
     for instance in qs:
-        print(instance.name.isdigit())
 
         instance_data=[]
         instance_data.append(instance)

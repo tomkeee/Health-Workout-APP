@@ -6,7 +6,7 @@
     <br/>
     <div class="mt-5 form-row justify-content-center">
         <div>
-            <a href="{% url 'exercise-detail' all %}"><button type="submit" class="ml-5 btn btn-outline-secondary btn-lg">All exercises</button></a>
+            <a href="{% url 'exercise-detail' 'All' %}"><button type="submit" class="ml-5 btn btn-outline-secondary btn-lg">All</button></a>
             {%for muscle in muscles%}
                 <a href="{% url 'exercise-detail' muscle %}"><button type="submit" class="ml-5 btn btn-outline-secondary btn-lg">{{muscle}}</button></a>
             {%endfor%}
