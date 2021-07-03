@@ -1,20 +1,42 @@
 from django.shortcuts import render
 from django.urls.base import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView,ListView,DeleteView
+from django.views.generic.edit import UpdateView
 from profiles.models import Weight
 from .forms import WeightForm
 
 import pandas as pd
-import numpy as np
-
-import datetime
 
 from django.db.models.functions import ExtractWeek
 
-class WeightUpdate(CreateView):
+class WeighList(ListView):
+    model=Weight
+    template_name="body/weightList.html"
+    queryset=Weight.objects.order_by("-date")
+
+    def get_queryset(self) :
+        user=self.request.user
+        return super().get_queryset().filter(owner=user)
+
+class WeightDelete(DeleteView):
+    model=Weight
+    template_name="body/weightDelete.html"
+    success_url=reverse_lazy("weight-list")
+
+class WeightUpdate(UpdateView):
     model=Weight
     form_class=WeightForm
-    template_name='body/weightUpdate.html'
+    template_name="body/weightUpdate.html"
+    success_url=reverse_lazy("weight")
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        return context
+
+class WeightAdd(CreateView):
+    model=Weight
+    form_class=WeightForm
+    template_name='body/weight.html'
     success_url=reverse_lazy("weight")
 
     def form_valid(self, form: WeightForm):
@@ -46,6 +68,7 @@ class WeightUpdate(CreateView):
         weeks=[]
         date_value=[]
         for each in x:
+            print(each.id)
             if each.week in weeks:
                 index=weeks.index(each.week)
                 date_value[index][1] += each.value

@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path,include
-from body.views import WeightUpdate,WeightController
+from body.views import WeightAdd,WeightController,WeightUpdate
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,8 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path((''),include('exercise.urls')),
-    path("weight/",WeightUpdate.as_view(),name="weight"),
-    path("weight/history",WeightController),
+    path(("weight/"),include("body.urls")),
 ]
 
 urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

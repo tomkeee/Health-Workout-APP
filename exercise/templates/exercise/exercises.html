@@ -8,8 +8,8 @@
     <table class="mt-4 table table-striped table-hover">
         <thead>
             <tr>
-                {%if muscle == "all"%}
-                <th scope="col">Name</th>
+                {%if muscle == "All"%}
+                <th scope="col">Muscle</th>
                 {%endif%}
                 <th scope="col">Name</th>
                 <th scope="col">Repetition</th>
@@ -21,7 +21,7 @@
         <tbody>
             {%for instance in data%}
             <tr>
-            {%if muscle == "all"%}
+            {%if muscle == "All"%}
             <td><b>{{instance.0.type}}</b></td>
             {%endif%}
             <td><b>{{instance.0.name}}</b></td>

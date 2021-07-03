@@ -9,4 +9,4 @@ class WeightForm(forms.ModelForm):
 
         widgets={
             "value":forms.TextInput(attrs={"class":"form-control col-4","placeholder":"Current Weight"})
-             }
+            }
