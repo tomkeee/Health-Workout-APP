@@ -1,4 +1,4 @@
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import CreateView,UpdateView
 from django.urls import reverse_lazy,reverse
@@ -58,25 +58,33 @@ def ExerciseRecord(request,muscle):
         qs=Exercise.objects.filter(profile=user).order_by("type")
     else:
         qs=Exercise.objects.filter(profile=user,type=muscle)
+    
+    class Exercisez:
+        def __init__(self,muscle,name,rep,ser,weight,form,id,formID):
+            self.muscle=muscle
+            self.name=name
+            self.rep=rep
+            self.ser=ser
+            self.weight=weight
+            self.form=form
+            self.id=id
+            self.formID=formID
+
+        def __str__(self):
+            return f"{self.name},{self.rep},{self.ser}"
 
     data=[]
     for instance in qs:
+        
+        single=Exercise.objects.get(id=instance.id)
+        data_form=UpdateForm(instance=single)
 
-        instance_data=[]
-        instance_data.append(instance)
-
-        obj=Exercise.objects.get(id=instance.id)
-        data_form=UpdateForm(instance=obj)
-
-        instance_data.append(data_form)
-
-        x=instance.name.replace(" ","_")
-
-        instance_data.append(x)
-        data.append(instance_data)
+        obj=Exercisez(instance.type,instance.name,instance.repetition,instance.series,instance.weight,data_form,instance.id,instance.name.replace(" ","_"))
+        data.append(obj)
+        muscle="All"
 
     context={
         "muscle":muscle,
         "data":data
     }
-    return render(request,"exercise/exercises.html",context)
+    return render(request,"exercise/test.html",context)

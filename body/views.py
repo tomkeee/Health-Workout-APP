@@ -68,7 +68,6 @@ class WeightAdd(CreateView):
         weeks=[]
         date_value=[]
         for each in x:
-            print(each.id)
             if each.week in weeks:
                 index=weeks.index(each.week)
                 date_value[index][1] += each.value
@@ -92,20 +91,25 @@ class WeightAdd(CreateView):
                 average=each.value
                 package.append(average)
 
-                
-                
-
                 start = pd.Series(pd.date_range(start='2021-1-1',periods=(each.week),normalize=True, freq='W'))[(each.week-1)].strftime("%-d %B, %Y")
                 package.append(start)
 
                 end = pd.Series(pd.date_range(start='2021-1-1',periods=(each.week+1), normalize=True, freq='W'))[(each.week)].strftime("%-d %B, %Y")
                 package.append(end)
 
-                if len(date_value) > 1:
+                if len(date_value) >= 1:
                     week_change=(each.value/date_value[-1][1])
                     package.append(week_change)
+                    if  week_change> 0:
+                        arrow="up"
+                    elif week_change < 0:
+                        arrow="down"
+                    else:
+                        arrow="none"
+                    package.append(arrow)
 
                 date_value.append(package)
+                print(package)
 
 
         if method == "descending":
