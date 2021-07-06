@@ -4,7 +4,7 @@ from django.views.generic import CreateView,ListView,DeleteView
 from django.views.generic.edit import UpdateView
 from profiles.models import Weight
 from .forms import WeightForm
-
+from .utils import get_chart
 import pandas as pd
 
 from django.db.models.functions import ExtractWeek
@@ -109,14 +109,12 @@ class WeightAdd(CreateView):
                     package.append(arrow)
 
                 date_value.append(package)
-                print(package)
 
 
         if method == "descending":
             date_value.reverse()
 
         context['week']=date_value
-        
 
 ################################################## DAILY ###################################################
         dates=[]
@@ -148,25 +146,35 @@ class WeightAdd(CreateView):
                     
                 data.append(package)
 
-        print(data)
-
 
         if method =="ascending":
             data.reverse()
 
         context["data"]=data
 
+        if type=="daily":
+            print("DAILY")
+            print(type)
+            df=pd.DataFrame(data)
+            chart=get_chart(df,y=1,x=0)
+            context["chart"]=chart
+        else:
+            print("WEEKLY")
+            df=pd.DataFrame(date_value)
+            print(df)
+            chart=get_chart(df,y=3,x=4)
+            context["chart"]=chart     
         return context
+
     
 def WeightController(request):
     user=request.user
-    print(user)
-    weight=Weight.objects.filter(owner=user).order_by("-date")
-    for i in weight:
-        print(i)
-        print(i.value)
-        print(i.date)
 
-    print(weight)
+    weight=Weight.objects.filter(owner=user).order_by("-date")
+
     context={"weight":weight}
     return render(request,"body/weight.html",context)
+
+
+
+ 

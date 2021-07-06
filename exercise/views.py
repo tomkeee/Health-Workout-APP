@@ -81,7 +81,6 @@ def ExerciseRecord(request,muscle):
 
         obj=Exercisez(instance.type,instance.name,instance.repetition,instance.series,instance.weight,data_form,instance.id,instance.name.replace(" ","_"))
         data.append(obj)
-        muscle="All"
 
     context={
         "muscle":muscle,

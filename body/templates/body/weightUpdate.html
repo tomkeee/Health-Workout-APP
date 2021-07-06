@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 {%block title%} Weight Update {%endblock%}
 {%block content%}
+<div class="container col-7">
+    <h5 style="text-align: center;" class="display-6">Update the weight <b>{{ object.value}} </b> kg from <br/> <b>{{object.date}}</b> ?</h5>
+    <br/>
+        <form action="" method="POST"> {%csrf_token%}
+                <div class="row justify-content-center">
+                    <div class="input-group justify-content-center" style="width: 500px;">
+                        {{form.value}}
 
-<form action="" method="POST"> {%csrf_token%}
-        <div class="row justify-content-center">
-            <div class="input-group justify-content-center" style="width: 500px;">
-                {{form.value}}
+                        <div class="input-group-append">
+                            <span class="input-group-text rounded-right">KG</span>
+                        </div>
+                        
+                        <button type="submit" class="rounded-left ml-2 btn btn-sml btn-outline-success">Save</button>
 
-                <div class="input-group-append">
-                    <span class="input-group-text rounded-right">KG</span>
+                    </div>
                 </div>
-                
-                <button type="submit" class="rounded-left ml-2 btn btn-sml btn-outline-success">Save</button>
-
-            </div>
-        </div>
-    </form> 
+        </form> 
+</div>
 
 {%endblock content%}
