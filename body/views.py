@@ -54,7 +54,6 @@ class WeightAdd(CreateView):
             type="daily"
             method="ascending"
 
-
         self.request.session['type']=type
         context['type']=type
 
@@ -70,57 +69,55 @@ class WeightAdd(CreateView):
         for each in x:
             if each.week in weeks:
                 index=weeks.index(each.week)
-                date_value[index][1] += each.value
-                date_value[index][2] += 1
-                date_value[index][3] = date_value[index][1] / date_value[index][2]
+                date_value[index]['weight_value'] += each.value
+                date_value[index]['number_of_records_in_a_week'] += 1
+                date_value[index]['average'] = date_value[index]['weight_value'] / date_value[index]['number_of_records_in_a_week']
                 if len(date_value) > 1:
-                    date_value[index][6]=date_value[index][1]/date_value[-1][1]
+                    date_value[index]['week_change']=date_value[index]['weight_value']/date_value[-1]['weight_value']
             else:
-                package=[]
+                package={}
                 weeks.append(each.week)
 
                 week_of_the_year=each.week
-                package.append(week_of_the_year)
+                package['week_of_the_year']=week_of_the_year
 
                 weight_value=each.value
-                package.append(weight_value)
+                package['weight_value']=weight_value
 
                 number_of_records_in_a_week=1
-                package.append(number_of_records_in_a_week)
+                package['number_of_records_in_a_week']=number_of_records_in_a_week
 
                 average=each.value
-                package.append(average)
+                package['average']=average
 
                 start = pd.Series(pd.date_range(start='2021-1-1',periods=(each.week),normalize=True, freq='W'))[(each.week-1)].strftime("%-d %B, %Y")
-                package.append(start)
+                package['start']=start
 
                 end = pd.Series(pd.date_range(start='2021-1-1',periods=(each.week+1), normalize=True, freq='W'))[(each.week)].strftime("%-d %B, %Y")
-                package.append(end)
+                package['end']=end
 
                 if len(date_value) >= 1:
-                    week_change=(each.value/date_value[-1][1])
-                    package.append(week_change)
+                    week_change=(each.value/date_value[-1]['weight_value'])
+                    package['week_change']=week_change
                     if  week_change> 0:
                         arrow="up"
                     elif week_change < 0:
                         arrow="down"
                     else:
                         arrow="none"
-                    package.append(arrow)
+                    package['arrow']=arrow
 
                 date_value.append(package)
-
 
         if method == "descending":
             date_value.reverse()
 
         context['week']=date_value
-
 ################################################## DAILY ###################################################
         dates=[]
         data=[]
         for instance in weight:
-            package=[]
+            package={}
             if instance.date in dates:
                 pass
             else:
@@ -128,13 +125,14 @@ class WeightAdd(CreateView):
                 dates.append(new_day)
 
                 day=instance.date.strftime("%-d %B, %Y") 
-                package.append(day)
+                package['day']=day
+
                 day_weight=instance.value
-                package.append(day_weight)
+                package['weight']=day_weight
 
                 if data:
-                    day_change=((day_weight/data[-1][1])-1)*100
-                    package.append(day_change)
+                    day_change=((day_weight/data[-1]['weight'])-1)*100
+                    package['weight_change']=day_change
 
                     if day_change > 0:
                         arrow="up"
@@ -142,10 +140,8 @@ class WeightAdd(CreateView):
                         arrow="down"
                     else:
                         arrow="none"
-                    package.append(arrow)
-                    
+                    package['arrow']=arrow
                 data.append(package)
-
 
         if method =="ascending":
             data.reverse()
@@ -153,20 +149,15 @@ class WeightAdd(CreateView):
         context["data"]=data
 
         if type=="daily":
-            print("DAILY")
-            print(type)
             df=pd.DataFrame(data)
-            chart=get_chart(df,y=1,x=0)
+            chart=get_chart(df,y='weight',x='day')
             context["chart"]=chart
         else:
-            print("WEEKLY")
             df=pd.DataFrame(date_value)
-            print(df)
-            chart=get_chart(df,y=3,x=4)
+            chart=get_chart(df,y='average',x='start')
             context["chart"]=chart     
         return context
 
-    
 def WeightController(request):
     user=request.user
 
