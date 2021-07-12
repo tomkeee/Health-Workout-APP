@@ -69,11 +69,27 @@ class WeightAdd(CreateView):
         for each in x:
             if each.week in weeks:
                 index=weeks.index(each.week)
+                previous_weeks=weeks.copy()
+                previous_weeks.pop(index)
+                try:
+                    max_nr=max(previous_weeks)
+                except:
+                    max_nr=date_value[index]['week_of_the_year']
+                previous_index=weeks.index(max_nr)
+
                 date_value[index]['weight_value'] += each.value
                 date_value[index]['number_of_records_in_a_week'] += 1
-                date_value[index]['average'] = date_value[index]['weight_value'] / date_value[index]['number_of_records_in_a_week']
+                date_value[index]['average'] = (date_value[index]['weight_value'] / date_value[index]['number_of_records_in_a_week'])
                 if len(date_value) > 1:
-                    date_value[index]['week_change']=date_value[index]['weight_value']/date_value[-1]['weight_value']
+                    date_value[index]['week_change']=((date_value[index]['average']/date_value[previous_index]['average'])-1)*100
+
+                    if  date_value[index]['week_change'] > 0:
+                        arrow="up"
+                    elif date_value[index]['week_change'] < 0:
+                        arrow="down"
+                    else:
+                        week_change="none"
+                    date_value[index]['arrow']=arrow
             else:
                 package={}
                 weeks.append(each.week)
@@ -97,7 +113,7 @@ class WeightAdd(CreateView):
                 package['end']=end
 
                 if len(date_value) >= 1:
-                    week_change=(each.value/date_value[-1]['weight_value'])
+                    week_change=((each.value/date_value[-1]['average'])-1)*100
                     package['week_change']=week_change
                     if  week_change> 0:
                         arrow="up"
@@ -106,9 +122,7 @@ class WeightAdd(CreateView):
                     else:
                         arrow="none"
                     package['arrow']=arrow
-
                 date_value.append(package)
-
         if method == "descending":
             date_value.reverse()
 
@@ -118,9 +132,7 @@ class WeightAdd(CreateView):
         data=[]
         for instance in weight:
             package={}
-            if instance.date in dates:
-                pass
-            else:
+            if instance.date not in dates:
                 new_day=instance.date
                 dates.append(new_day)
 
@@ -142,7 +154,7 @@ class WeightAdd(CreateView):
                         arrow="none"
                     package['arrow']=arrow
                 data.append(package)
-
+        
         if method =="ascending":
             data.reverse()
 

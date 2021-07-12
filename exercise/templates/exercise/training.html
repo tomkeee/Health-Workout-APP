@@ -1,0 +1,40 @@
+{%extends 'base.html'%}
+{%block title%} Training List{%endblock%}
+{%block content%}
+<h5 class="display-3 text-center">Training Calendar</h5>
+  <table class="table table-striped space-little">
+    <thead>
+      <tr>
+        <th scope="col">Day of the week </th>
+        {% if 'chest' in muscle %}<th class="text-center" scope="col">Chest</th>{%endif%}
+        {% if 'biceps' in muscle %}<th class="text-center" scope="col">Biceps</th>{%endif%}
+        {% if 'triceps' in muscle %}<th class="text-center" scope="col">Triceps</th>{%endif%}
+        {% if 'shoulders' in muscle %}<th class="text-center" scope="col">Shoulders</th>{%endif%}
+        {% if 'back' in muscle %}<th class="text-center" scope="col">Back</th>{%endif%}
+        {% if 'abs' in muscle %}<th class="text-center" scope="col"> ABS</th>{%endif%}
+        {% if 'hamstring' in muscle %}<th class="text-center" scope="col">Hamstring</th>{%endif%}
+        {% if 'calves' in muscle %} <th class="text-center" scope="col">Calves</th>{%endif%}
+        {% if 'glutes' in muscle %} <th class="text-center" scope="col">Glutes</th>{%endif%}
+      </tr>
+    </thead>
+    <tbody>
+        {%for instance in qs%}
+            <tr>
+              <th scope="row">{{instance.day}}</th>
+              {% if 'chest' in muscle %}<th class="text-center" scope="row">{%if 'chest' in instance.muscles %} X {%endif%}</th>{%endif%}
+              {% if 'biceps' in muscle %}<th class="text-center" scope="row">{%if 'biceps' in instance.muscles %} X {%endif%}</th>{%endif%}
+              {% if 'triceps' in muscle %}<th class="text-center" scope="row">{%if 'triceps' in instance.muscles %} X {%endif%}</th>{%endif%}
+              {% if 'shoulders' in muscle %}<th class="text-center" scope="row">{%if 'shoulders' in instance.muscles %} X {%endif%}</th>{%endif%}
+              {% if 'back' in muscle %}<th class="text-center" scope="row">{%if 'back' in instance.muscles %} X {%endif%}</th>{%endif%}
+              {% if 'abs' in muscle %}<th class="text-center" scope="row">{%if 'abs' in instance.muscles %} X {%endif%}</th>{%endif%}
+              {% if 'hamstring' in muscle %}<th class="text-center" scope="row">{%if 'hamstring' in instance.muscles %} X {%endif%}</th>{%endif%}
+              {% if 'calves' in muscle %}<th class="text-center" scope="row">{%if 'calves' in instance.muscles %} X {%endif%}</th>{%endif%}
+              {% if 'glutes' in muscle %}<th class="text-center" scope="row">{%if 'glutes' in instance.muscles %} X {%endif%}</th>{%endif%}
+            </tr>
+        {%endfor%}
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end col-13 space-little">
+    <a href="{% url 'training-add' %}"><button class="btn btn-md btn-outline-secondary">New Training</button></a>
+  </div>
+{%endblock%}

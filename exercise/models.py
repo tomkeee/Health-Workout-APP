@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from multiselectfield import MultiSelectFormField
 
 MUSCLE_INVOLVED=(
     ("chest","chest"),
@@ -14,6 +15,7 @@ MUSCLE_INVOLVED=(
     ("glutes","glutes")
 )
 
+
 class Exercise(models.Model):
     profile=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     name=models.CharField(max_length=50)
@@ -21,9 +23,24 @@ class Exercise(models.Model):
     repetition=models.PositiveIntegerField()
     weight=models.FloatField()
     series=models.PositiveIntegerField()
+    
 
     def __str__(self):
         return f"{self.type} - {self.name}"
 
     def get_absolute_url(self):
         return reverse("exercise_detail", kwargs={"pk": self.pk})
+
+class Day(models.Model):
+    day=models.CharField(max_length=10)
+
+    def __str__(self):
+        return f"{self.day}"
+
+class Training(models.Model):
+    account=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    type=models.CharField(max_length=9,choices=MUSCLE_INVOLVED,null=True)
+    day = models.ManyToManyField(Day,related_name="day_of_the_week")
+
+    def __str__(self):
+        return f"{self.type} exercises"

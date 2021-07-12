@@ -1,5 +1,5 @@
-from .models import Exercise
-from django.forms import ModelForm
+from .models import Exercise, Training
+from django.forms import ModelForm, widgets
 from django import forms
 
 MUSCLE=(
@@ -12,6 +12,16 @@ MUSCLE=(
     ("hamstring","hamstring"),
     ("calves","calves"),
     ("glutes","glutes")
+)
+
+WEEK_DAY=(
+    ("Monday","Monday"),
+    ("Tuesday","Tuesday"),
+    ("Wednesday","Wednesday"),
+    ("Thursday","Thursday"),
+    ("Friday","Friday"),
+    ("Saturday","Saturday"),
+    ("Sunday","Sunday"),
 )
 
 class UpdateForm(ModelForm):
@@ -30,3 +40,12 @@ class UpdateForm(ModelForm):
         if data.isdigit():
             raise forms.ValidationError("Name of your exercise should be a value not a number")
         return data
+
+class NewTraining(ModelForm):
+    class Meta:
+        model=Training
+        fields=['type','day']
+        widgets={
+            "type":forms.Select(choices=MUSCLE ,attrs={"class":"form-select col-2 mb-4"}),
+            "day":forms.SelectMultiple(choices=WEEK_DAY ,attrs={"class":"form-select col-2","size":"7"})
+        }
