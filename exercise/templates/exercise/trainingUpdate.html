@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+{%block title%}New Training{%endblock%}
+{%block content%}
+<div class="d-flex justify-content-center">
+    <div class="col-6">
+        <h5 class="display-5 text-center">Modify Your Training</h5>
+        <hr>
+    </div>
+</div>
+<div style="margin-top: 2em;">
+        <form action="" method="POST" > {%csrf_token%}
+            <div class="d-flex justify-content-center">
+                {{form.exercise}}
+            </div>
+        <div class="col-9 mt-3 d-flex justify-content-end">
+            <button type="submit" class="btn btn-md btn-outline-secondary">Save</button>
+        </div>
+        </form>
+</div>
+{%endblock%}

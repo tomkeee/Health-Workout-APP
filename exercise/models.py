@@ -15,6 +15,15 @@ MUSCLE_INVOLVED=(
     ("glutes","glutes")
 )
 
+WEEK_DAY=(
+    ("Monday","Monday"),
+    ("Tuesday","Tuesday"),
+    ("Wednesday","Wednesday"),
+    ("Thursday","Thursday"),
+    ("Friday","Friday"),
+    ("Saturday","Saturday"),
+    ("Sunday","Sunday"),
+)
 
 class Exercise(models.Model):
     profile=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
@@ -23,7 +32,6 @@ class Exercise(models.Model):
     repetition=models.PositiveIntegerField()
     weight=models.FloatField()
     series=models.PositiveIntegerField()
-    
 
     def __str__(self):
         return f"{self.type} - {self.name}"
@@ -31,16 +39,13 @@ class Exercise(models.Model):
     def get_absolute_url(self):
         return reverse("exercise_detail", kwargs={"pk": self.pk})
 
-class Day(models.Model):
-    day=models.CharField(max_length=10)
-
-    def __str__(self):
-        return f"{self.day}"
-
 class Training(models.Model):
     account=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
-    type=models.CharField(max_length=9,choices=MUSCLE_INVOLVED,null=True)
-    day = models.ManyToManyField(Day,related_name="day_of_the_week")
+    day=models.CharField(max_length=10,choices=WEEK_DAY,null=True)
+    exercise=models.ManyToManyField(Exercise,null=True)
+
+    def get_exercises(self):
+        return self.exercise.all()
 
     def __str__(self):
-        return f"{self.type} exercises"
+        return f"{self.day} exercises"

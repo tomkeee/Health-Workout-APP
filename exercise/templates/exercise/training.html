@@ -1,40 +1,73 @@
 {%extends 'base.html'%}
 {%block title%} Training List{%endblock%}
 {%block content%}
+{{x}}
 <h5 class="display-3 text-center">Training Calendar</h5>
   <table class="table table-striped space-little">
     <thead>
       <tr>
         <th scope="col">Day of the week </th>
-        {% if 'chest' in muscle %}<th class="text-center" scope="col">Chest</th>{%endif%}
-        {% if 'biceps' in muscle %}<th class="text-center" scope="col">Biceps</th>{%endif%}
-        {% if 'triceps' in muscle %}<th class="text-center" scope="col">Triceps</th>{%endif%}
-        {% if 'shoulders' in muscle %}<th class="text-center" scope="col">Shoulders</th>{%endif%}
-        {% if 'back' in muscle %}<th class="text-center" scope="col">Back</th>{%endif%}
-        {% if 'abs' in muscle %}<th class="text-center" scope="col"> ABS</th>{%endif%}
-        {% if 'hamstring' in muscle %}<th class="text-center" scope="col">Hamstring</th>{%endif%}
-        {% if 'calves' in muscle %} <th class="text-center" scope="col">Calves</th>{%endif%}
-        {% if 'glutes' in muscle %} <th class="text-center" scope="col">Glutes</th>{%endif%}
+        {% if 'chest' in trained_muscles_week %}<th class="text-center" scope="col">Chest</th>{%endif%}
+        {% if 'biceps' in trained_muscles_week %}<th class="text-center" scope="col">Biceps</th>{%endif%}
+        {% if 'triceps' in trained_muscles_week %}<th class="text-center" scope="col">Triceps</th>{%endif%}
+        {% if 'shoulders' in trained_muscles_week %}<th class="text-center" scope="col">Shoulders</th>{%endif%}
+        {% if 'back' in trained_muscles_week %}<th class="text-center" scope="col">Back</th>{%endif%}
+        {% if 'abs' in trained_muscles_week %}<th class="text-center" scope="col"> ABS</th>{%endif%}
+        {% if 'hamstring' in trained_muscles_week %}<th class="text-center" scope="col">Hamstring</th>{%endif%}
+        {% if 'calves' in trained_muscles_week %} <th class="text-center" scope="col">Calves</th>{%endif%}
+        {% if 'glutes' in trained_muscles_week %} <th class="text-center" scope="col">Glutes</th>{%endif%}
       </tr>
     </thead>
     <tbody>
-        {%for instance in qs%}
-            <tr>
-              <th scope="row">{{instance.day}}</th>
-              {% if 'chest' in muscle %}<th class="text-center" scope="row">{%if 'chest' in instance.muscles %} X {%endif%}</th>{%endif%}
-              {% if 'biceps' in muscle %}<th class="text-center" scope="row">{%if 'biceps' in instance.muscles %} X {%endif%}</th>{%endif%}
-              {% if 'triceps' in muscle %}<th class="text-center" scope="row">{%if 'triceps' in instance.muscles %} X {%endif%}</th>{%endif%}
-              {% if 'shoulders' in muscle %}<th class="text-center" scope="row">{%if 'shoulders' in instance.muscles %} X {%endif%}</th>{%endif%}
-              {% if 'back' in muscle %}<th class="text-center" scope="row">{%if 'back' in instance.muscles %} X {%endif%}</th>{%endif%}
-              {% if 'abs' in muscle %}<th class="text-center" scope="row">{%if 'abs' in instance.muscles %} X {%endif%}</th>{%endif%}
-              {% if 'hamstring' in muscle %}<th class="text-center" scope="row">{%if 'hamstring' in instance.muscles %} X {%endif%}</th>{%endif%}
-              {% if 'calves' in muscle %}<th class="text-center" scope="row">{%if 'calves' in instance.muscles %} X {%endif%}</th>{%endif%}
-              {% if 'glutes' in muscle %}<th class="text-center" scope="row">{%if 'glutes' in instance.muscles %} X {%endif%}</th>{%endif%}
-            </tr>
+        {%for instance in sorted_data%}
+        <tr data-bs-toggle="modal" data-bs-target="#{{instance.day}}">
+          <td scope="row"><h5><strong>{{instance.day}}</strong></h5></td>
+          {% if 'chest' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'chest' in instance.muscles %} X {%endif%}</td>{%endif%}
+          {% if 'biceps' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'biceps' in instance.muscles %} X {%endif%}</td>{%endif%}
+          {% if 'triceps' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'triceps' in instance.muscles %} X {%endif%}</td>{%endif%}
+          {% if 'shoulders' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'shoulders' in instance.muscles %} X {%endif%}</td>{%endif%}
+          {% if 'back' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'back' in instance.muscles %} X {%endif%}</td>{%endif%}
+          {% if 'abs' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'abs' in instance.muscles %} X {%endif%}</td>{%endif%}
+          {% if 'hamstring' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'hamstring' in instance.muscles %} X {%endif%}</td>{%endif%}
+          {% if 'calves' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'calves' in instance.muscles %} X {%endif%}</td>{%endif%}
+          {% if 'glutes' in trained_muscles_week %}<td class="text-center font-weight-bold" scope="row">{%if 'glutes' in instance.muscles %} X {%endif%}</td>{%endif%}
+
+
+
+
+            <div class="modal fade" id="{{instance.day}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+
+                  <div class="modal-header">
+                    <h1 class="display-3" style="margin-left: auto;" >{{instance.day}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form role="form" action="{% url 'training-update' instance.id %}" method="POST">
+                      {%csrf_token%}
+                      <div class="justify-content-center form-row mt-3">
+                        <div class="space-little form-group mr-2" style="min-width: 300px;">
+                          {{instance.form.exercise.errors}}
+                          {{instance.form.exercise}}
+                        </div>
+                      </div>
+                      <div class="modal-footer space-little">
+                        <button type="submit" class="mt-3 btn btn-outline-success btn-lg">Save</button>
+                      </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </tr>
         {%endfor%}
     </tbody>
   </table>
-  <div class="d-flex justify-content-end col-13 space-little">
-    <a href="{% url 'training-add' %}"><button class="btn btn-md btn-outline-secondary">New Training</button></a>
-  </div>
+
+
+
+
+
+
+
+
 {%endblock%}

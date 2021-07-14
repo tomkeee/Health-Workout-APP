@@ -137,6 +137,8 @@ class WeightAdd(CreateView):
                 dates.append(new_day)
 
                 day=instance.date.strftime("%-d %B, %Y") 
+                day_chart=instance.date.strftime("%-d.%m")
+                package['day_chart']=day_chart
                 package['day']=day
 
                 day_weight=instance.value
@@ -145,7 +147,6 @@ class WeightAdd(CreateView):
                 if data:
                     day_change=((day_weight/data[-1]['weight'])-1)*100
                     package['weight_change']=day_change
-
                     if day_change > 0:
                         arrow="up"
                     elif day_change < 0:
@@ -159,15 +160,15 @@ class WeightAdd(CreateView):
             data.reverse()
 
         context["data"]=data
-
-        if type=="daily":
-            df=pd.DataFrame(data)
-            chart=get_chart(df,y='weight',x='day')
-            context["chart"]=chart
-        else:
-            df=pd.DataFrame(date_value)
-            chart=get_chart(df,y='average',x='start')
-            context["chart"]=chart     
+        if data:
+            if type=="daily":
+                df=pd.DataFrame(data)
+                chart=get_chart(df,y='weight',x='day_chart')
+                context["chart"]=chart
+            else:
+                df=pd.DataFrame(date_value)
+                chart=get_chart(df,y='average',x='start')
+                context["chart"]=chart     
         return context
 
 def WeightController(request):
@@ -177,7 +178,3 @@ def WeightController(request):
 
     context={"weight":weight}
     return render(request,"body/weight.html",context)
-
-
-
- 

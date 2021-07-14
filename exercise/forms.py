@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from .models import Exercise, Training
 from django.forms import ModelForm, widgets
 from django import forms
@@ -41,11 +42,19 @@ class UpdateForm(ModelForm):
             raise forms.ValidationError("Name of your exercise should be a value not a number")
         return data
 
-class NewTraining(ModelForm):
+class UpdateTraining(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UpdateTraining, self).__init__(*args, **kwargs) 
+        choices=[]
+        user=self.instance.account
+        if self.instance and self.instance.pk:
+            self.fields['exercise'].queryset = Exercise.objects.filter(profile=user)
+
+    exercise=forms.ModelMultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple(attrs={'size': '40',"class":"h6"}),
+            queryset=Exercise.objects.all(),
+            required=False)
+
     class Meta:
         model=Training
-        fields=['type','day']
-        widgets={
-            "type":forms.Select(choices=MUSCLE ,attrs={"class":"form-select col-2 mb-4"}),
-            "day":forms.SelectMultiple(choices=WEEK_DAY ,attrs={"class":"form-select col-2","size":"7"})
-        }
+        fields=['exercise']

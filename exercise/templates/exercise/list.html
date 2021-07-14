@@ -1,6 +1,7 @@
 {%extends 'base.html'%}
 {%block title%} List {%endblock%}
 {%block content%}
+{%if qs%}
 <div class="container" style="margin-bottom: 400px; margin-top: 100px;">
     <h1 class="display-3 text-center">Select exercise for eligible muscle </h1>
     <br/>
@@ -13,4 +14,15 @@
         </div>
     </div>
 </div>
+{%else%}
+<div class="jumbotron">
+  <h1 class="display-4">Add New Data</h1>
+  <p class="lead">In order to see your exercises add new data</p>
+  <hr class="my-4">
+  <p class="lead">To do so, go to the top-left corner and go to New Exercise or click the link below</p>
+  <p class="lead"></p>
+    <a class="btn btn-primary btn-lg" href="{%url 'exercise-add' %}" role="button">New Exercise</a>
+  </p>
+</div>
+{%endif%}
 {%endblock content%}
