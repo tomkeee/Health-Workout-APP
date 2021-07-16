@@ -53,6 +53,12 @@ def ExerciseList(request):
 @login_required
 def ExerciseRecord(request,muscle):
     user=request.user
+    if request.method == "POST":
+        training_id=request.POST.get("exercise_id",-1)
+        if training_id != 0 :
+            Exercise.objects.filter(id=training_id).delete()
+
+
     if muscle == "All":
         qs=Exercise.objects.filter(profile=user).order_by("type")
     else:

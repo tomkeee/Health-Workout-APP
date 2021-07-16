@@ -79,10 +79,15 @@
                                     {{instance.form.type.errors}}
                                     {{instance.form.type}}
                                 </div>
-                                <div class="modal-footer">
-                                  <button type="submit" class="mt-3 btn btn-outline-success btn-lg">Save</button>
-                                </div>
-                            </form>
+                                
+                                <div class="modal-footer d-flex justify-content-around">
+                                    <button type="submit" class="justify-content-end mt-3 btn btn-outline-success btn-lg">Save</button>
+                                </form>
+                                
+                                  <form action="" method="POST">{%csrf_token%}
+                                    <button type="submit" name="exercise_id" value="{{instance.id}}" class="justify-content- mt-3 btn btn-outline-danger btn-lg">Delete</button>
+                                  </form>
+                              </div>
                           </div>
                         </div>
                       </div>

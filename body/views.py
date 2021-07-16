@@ -123,9 +123,6 @@ class WeightAdd(CreateView):
                         arrow="none"
                     package['arrow']=arrow
                 date_value.append(package)
-        if method == "descending":
-            date_value.reverse()
-
         context['week']=date_value
 ################################################## DAILY ###################################################
         dates=[]
@@ -156,8 +153,6 @@ class WeightAdd(CreateView):
                     package['arrow']=arrow
                 data.append(package)
         
-        if method =="ascending":
-            data.reverse()
 
         context["data"]=data
         if data:
@@ -168,7 +163,11 @@ class WeightAdd(CreateView):
             else:
                 df=pd.DataFrame(date_value)
                 chart=get_chart(df,y='average',x='start')
-                context["chart"]=chart     
+                context["chart"]=chart  
+
+        if method == "descending":
+            date_value.reverse()
+            data.reverse()
         return context
 
 def WeightController(request):
