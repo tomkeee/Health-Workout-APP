@@ -1,5 +1,4 @@
 {%extends 'base.html'%}
-{%load crispy_forms_tags%}
 
 {%block title%}Create an account{%endblock%}
 
@@ -11,11 +10,51 @@
             <hr class="mt-0 mb-4">
 
                 <form method="POST" class="form-group"> {% csrf_token %}
-                    {{form|crispy}}
-                    <p>Already have an account? <a href="/profile/login">Sign in</a></p>
+                    {{form.username.label_tag}}
+                    {{form.username}}
+                    {{form.username.errors}}
+                    
+                    {{form.password1.label_tag}}
+                    {{form.password1}}
+
+                    {{form.password2.label_tag}}
+                    {{form.password2}}
+                    
+                    {{form.password2.errors}}
+                    {{form.password1.errors}}
+
+                    <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
                     <button type="submit" class="btn btn-success">Register</button>
+                    
                 </form>
-        </div>
     </div>
 </div>
+
+
+{%if form.errors.username %}
+    <script>
+        document.getElementById('username').classList.add('is-invalid');
+    </script>
+{%else%}
+
+<script>
+    if (document.getElementById('username').value){
+        document.getElementById('username').classList.add('is-valid');}
+</script>
+{%endif%}
+
+
+{%if form.errors.password2 %}
+<script>
+    document.getElementById('password2').classList.add('is-invalid');
+    document.getElementById('password1').classList.add('is-invalid');
+</script>
+{%else%}
+<script>
+    if ((document.getElementById('username').value)){
+        document.getElementById('password2').classList.add("is-valid");
+        document.getElementById('password1').classList.add("is-valid");
+    ;}
+</script>
+{%endif%}
 {%endblock%}

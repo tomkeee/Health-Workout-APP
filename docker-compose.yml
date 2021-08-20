@@ -1,0 +1,15 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=wiwa
+  backend:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "1000:8000"
+    depends_on:
+      - db

@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path((''),include('exercise.urls')),
+    path("profile/",include("profiles.urls")),
     path(("weight/"),include("body.urls")),
 ]
 

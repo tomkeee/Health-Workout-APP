@@ -9,7 +9,6 @@ urlpatterns = [
     path('',ExerciseList,name="list"),
     path('exercise/<str:muscle>/',ExerciseRecord,name="exercise-detail"),
     path('update/<int:pk>/',UpdateExercise.as_view(),name="exercise-update"),
-    path("profile/",include("profiles.urls")),
     path("training/",TrainingView.as_view(),name="training"),
     path("training/update/<int:pk>/",TrainingUpdate.as_view(),name="training-update"),
 

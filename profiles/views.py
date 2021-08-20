@@ -8,41 +8,13 @@ from django.contrib.auth import authenticate,logout,login
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.models import User
 from django.views.generic import UpdateView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 def logout_view(request):
     logout(request)
     return redirect('/profile/login')
-
-def login_view(request):
-    error_message=None
-    form_b= LoginForm(request.POST or None)
-    print(request.user)
-
-    registration=True
-
-    if request.method=="POST":
-            if form_b.is_valid():
-                username=form_b.cleaned_data.get("username")
-                password=form_b.cleaned_data.get('password')
-                user = authenticate(username=username,password=password)
-                if user is not None:
-                    login(request,user)
-                    if request.GET.get('next'):
-                        return redirect(request.GET.get('next'))
-                    else:
-                        return redirect('/')
-            else:
-                error_message="Ups ... something went wrong"
-        # else:
-            # return HttpResponse("Validation error has occured")
-        
-    context={
-        'form':form_b,
-        'error_message':error_message,
-        "registration":registration
-    }
-    return render(request,"profiles/login.html",context)
-
 
 def CreateProfile(request):
     registration=True
@@ -74,7 +46,7 @@ def CreateProfile(request):
     return render(request,"profiles/register.html",{"form":form, "registration":registration})
 
 
-class EditProfile(UpdateView):
+class EditProfile(LoginRequiredMixin,UpdateView):
     form_class=EditProfileForm
     template_name="profiles/edit.html"
     success_url='/'

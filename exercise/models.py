@@ -12,7 +12,8 @@ MUSCLE_INVOLVED=(
     ("shoulders","shoulders"),
     ("hamstring","hamstring"),
     ("calves","calves"),
-    ("glutes","glutes")
+    ("glutes","glutes"),
+    ("training","training")
 )
 
 WEEK_DAY=(
@@ -29,9 +30,9 @@ class Exercise(models.Model):
     profile=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     name=models.CharField(max_length=50)
     type=models.CharField(max_length=9,choices=MUSCLE_INVOLVED,null=True)
-    repetition=models.PositiveIntegerField()
-    weight=models.FloatField()
-    series=models.PositiveIntegerField()
+    repetition=models.PositiveIntegerField(blank=True,null=True)
+    weight=models.FloatField(blank=True,null=True)
+    series=models.PositiveIntegerField(blank=True,null=True)
 
     def __str__(self):
         return f"{self.type} - {self.name}"

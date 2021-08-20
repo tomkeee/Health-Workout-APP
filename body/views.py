@@ -6,10 +6,12 @@ from profiles.models import Weight
 from .forms import WeightForm
 from .utils import get_chart
 import pandas as pd
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models.functions import ExtractWeek
 
-class WeighList(ListView):
+class WeighList(LoginRequiredMixin,ListView):
     model=Weight
     template_name="body/weightList.html"
     queryset=Weight.objects.order_by("-date")
@@ -18,12 +20,12 @@ class WeighList(ListView):
         user=self.request.user
         return super().get_queryset().filter(owner=user)
 
-class WeightDelete(DeleteView):
+class WeightDelete(LoginRequiredMixin,DeleteView):
     model=Weight
     template_name="body/weightDelete.html"
     success_url=reverse_lazy("weight-list")
 
-class WeightUpdate(UpdateView):
+class WeightUpdate(LoginRequiredMixin,UpdateView):
     model=Weight
     form_class=WeightForm
     template_name="body/weightUpdate.html"
@@ -33,7 +35,7 @@ class WeightUpdate(UpdateView):
         context=super().get_context_data(**kwargs)
         return context
 
-class WeightAdd(CreateView):
+class WeightAdd(LoginRequiredMixin,CreateView):
     model=Weight
     form_class=WeightForm
     template_name='body/weight.html'
@@ -67,6 +69,7 @@ class WeightAdd(CreateView):
         weeks=[]
         date_value=[]
         for each in x:
+
             if each.week in weeks:
                 index=weeks.index(each.week)
                 previous_weeks=weeks.copy()
@@ -108,6 +111,7 @@ class WeightAdd(CreateView):
 
                 start = pd.Series(pd.date_range(start='2021-1-1',periods=(each.week),normalize=True, freq='W'))[(each.week-1)].strftime("%-d %B, %Y")
                 package['start']=start
+                print(each.week)
 
                 end = pd.Series(pd.date_range(start='2021-1-1',periods=(each.week+1), normalize=True, freq='W'))[(each.week)].strftime("%-d %B, %Y")
                 package['end']=end
@@ -170,6 +174,7 @@ class WeightAdd(CreateView):
             data.reverse()
         return context
 
+@login_required
 def WeightController(request):
     user=request.user
 

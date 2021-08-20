@@ -23,8 +23,7 @@ class NewExercise(LoginRequiredMixin,CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
-@method_decorator(login_required, name='dispatch')
-class UpdateExercise(UpdateView):
+class UpdateExercise(LoginRequiredMixin,UpdateView):
     model=Exercise
     form_class=UpdateForm
     template_name="exercise/record.html"
@@ -93,7 +92,7 @@ def ExerciseRecord(request,muscle):
     }
     return render(request,"exercise/test.html",context)
 
-class TrainingView(ListView):
+class TrainingView(LoginRequiredMixin,ListView):
     model=Training
     template_name="exercise/training.html"
 
@@ -136,7 +135,7 @@ class TrainingView(ListView):
 
         return context
 
-class TrainingUpdate(UpdateView):
+class TrainingUpdate(LoginRequiredMixin,UpdateView):
     model=Training
     template_name="exercise/trainingUpdate.html"
     form_class=UpdateTraining

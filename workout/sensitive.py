@@ -1,5 +1,6 @@
 NAME='workout'
 USER='postgres'
-PASSWORD='wiwa12321'
+PASSWORD='wiwa'
+# HOST='host.docker.internal'
 HOST='localhost'
-PORT='3000'
+PORT='2345'
