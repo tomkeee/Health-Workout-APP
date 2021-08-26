@@ -1,5 +1,9 @@
 Web application that helps with achieving weight and workout goals
 
+--------- DOCKER ------------------
+
+docker run --rm -d -p 8000:8000 66122001/workoutapp in order to run docker container on local port 8000 (e.g. localhost:8000) 
+
 ------------------------------------------------- WEIGHT ---------------------------------------------------------
 
 
